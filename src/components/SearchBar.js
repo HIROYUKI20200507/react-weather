@@ -21,9 +21,6 @@ const SearchBar = ({ onSubmit }) => {
                 />
             </div>
             <button class="ui primary button">検索</button>
-            <div>
-                
-            </div>
         </form>
     );
 };

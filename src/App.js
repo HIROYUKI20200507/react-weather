@@ -27,14 +27,14 @@ const App = () => {
     
             const params = {
                 key: "bd516a21b339b45198db52801af10c11",
-                q: term,
+                q: term
             };
             const response = await axios.get("http://api.openweathermap.org/data/2.5/weather?q=" + ( params.q ) + "&APPID=" + ( params.key ));
-
+            
             stage.textContent = ( term );
+            console.log(response);
             def.textContent = ( response.data.weather[0].main );
             stage.appendChild(new_stage);
-            def.appendChild(new_def);
     
         } catch {}
     };
