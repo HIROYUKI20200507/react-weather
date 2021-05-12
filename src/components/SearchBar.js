@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const SearchBar = () => {
+const SearchBar = ({ onSubmit }) => {
+    const [term, setTerm] = useState('');
     const onFormSubmit = (event) => {
         event.preventDefault();
-        console.log('onSubmit');
+        onSubmit(term);
     };
     return (
         <form onSubmit={onFormSubmit} className="ui form">
         <div className="field">
             <label>Weather Search</label>
-            <input type="text" name="first-name" placeholder="都道府県を入力してください" />
+            <input 
+                type="text" 
+                name="search" 
+                placeholder="都道府県を入力してください" 
+                value={term}
+                onChange={(event) => {
+                    setTerm(event.target.value);
+                }}
+            />
         </div>
         </form>
     );
