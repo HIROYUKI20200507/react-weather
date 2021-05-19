@@ -1,63 +1,87 @@
-import React, { useState } from "react";
-import axios from 'axios';
-import SearchButton from "./SearchButton";
+import React from 'react';
+import axios from "axios";
+import {Button, TextField} from "@material-ui/core";
 
-class StartDefault extends React.Component {
+const API_ENDPOINT = 'http://api.openweathermap.org/data/2.5/forecast';
+
+export default class StartDefault extends React.Component {
     constructor(props) {
         super(props);
-
-        const GEOCODE_ENDPOINT = 'http://api.openweathermap.org/data/2.5/weather?q=' + (props.isPlace) + "&APPID=" + "bd516a21b339b45198db52801af10c11";
-
-    axios
-    .get(GEOCODE_ENDPOINT, { params: { address: props.isPlace } })
-        .then((results) => {
-            const data = results.data;
-            const result = data.weather[0];
-            const newWeather = result.main;
-            console.log(newWeather + '天気情報');
-            this.setState({
-                isWeather: newWeather + '天気情報'
+        // 初期stateを設定
+        this.state = {
+            apiKey : '47b3630b308ec48d5500f001df566669',
+            requestCity: '東京',
+            city: 'tokyo',
+            response : []
+        };
+        this.handleInput = this.handleInput.bind(this);
+        this.handleGetWeather = this.handleGetWeather.bind(this);
+    }
+    // 天気情報の取得
+    handleGetWeather(){
+        axios
+            .get(API_ENDPOINT, {
+                params: {
+                    q: this.state.requestCity,
+                    APPID: this.state.apiKey
+                } })
+            .then(res => {
+                // stateへresponseとcityを更新
+                this.setState({
+                    response: res.data.list,
+                    city: res.data.city.name
+                });
             })
-        })
+            // エラーの場合描画
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+    // ライフサイクルメソッドで全体描画時、関数呼び出し
+    componentDidMount() {
+        this.handleGetWeather()
+    }
 
-        .catch(() => {
-            console.log('通信に失敗しました。');
+    // render内だと無限ループになるため、関数は外で定義
+    handleInput({ target: { value } }) {
+        this.setState({
+            requestCity: value
         });
     }
-
-    handleChange = (e) => {
-        this.setState({
-            isPlace:  e.target.value
-        })
-        console.log('stateの中身');
-        console.log(this.state);
-    }
-
-
     render() {
+        // stateが渡ってきているか確認
+        console.log(this.state.response);
         return (
-            <div className="app">
-                <form className="ui form">
-                    <div className="field">
-                        <label>
-                            Weather Search
-                        </label>
-                            <input
-                                type="text"
-                                // value={this.props.isPlace}
-                                placeholder="都道府県を入力してください"
-                                onChange={this.handleChange}
-                                />
-                    </div>
-                    <SearchButton
-                        class="ui primary button"
-                        isPlaceAdd = {() => this.handleChange()}
-                        toggle={this.props.isWeather}
-                    />
-                </form>
+            <div style={{margin: '100px'}}>
+                <h1>お天気検索</h1>
+                <TextField
+                    id="standard-basic"
+                    label="Standard"
+                    type="text"
+                    // 入力した情報をstateへ渡す
+                    value={this.state.requestCity}
+                    // 関数呼び出し
+                    onChange={this.handleInput}
+                />
+                {/* クリックしたら天気情報の取得 */}
+                <Button
+                    onClick={this.handleGetWeather}
+                    variant="contained"
+                    color="primary"
+                    >Search
+                </Button>
+                {/* クリックしたら場所情報の取得 */}
+                <p> Location: {this.state.city} </p>
+                {/* map関数 */}
+                {Object.keys(this.state.response).map(key => (
+                    <li key={key}>
+                        {this.state.response[key].dt_txt}
+                        {/* this.state.response[key].weather[0]で天気情報を取得 */}
+                        ,<img src={'http://openweathermap.org/img/w/'+this.state.response[key].weather[0].icon+'.png'} />
+                        {this.state.response[key].weather[0].main}
+                    </li>
+                ))}
             </div>
         );
     }
 }
-
-export default StartDefault;
