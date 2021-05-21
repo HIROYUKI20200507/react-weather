@@ -8,6 +8,7 @@ export const UsersReducer = (state = initialState.users, action) => {
         case Actions.SEARCH_INPUT:
             return {
                 //スプレット構文でactions.jsの内容をオブジェクトとして展開
+                // ...stateで初期状態のオブジェクトも一緒に展開しないと、actionsで渡ってきていないオブジェクトが消える
                 ...state,
                 ...action.payload
             }
