@@ -14,6 +14,7 @@ export default class StartDefault extends React.Component {
             city: 'tokyo',
             response : []
         };
+        // 変数化
         this.handleInput = this.handleInput.bind(this);
         this.handleGetWeather = this.handleGetWeather.bind(this);
     }
