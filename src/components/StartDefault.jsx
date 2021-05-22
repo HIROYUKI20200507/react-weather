@@ -1,88 +1,90 @@
 import React from 'react';
 import axios from "axios";
 import {Button, TextField} from "@material-ui/core";
+import { searchInputAction } from "../reducks/users/actions";
+import { useDispatch,useSelector } from "react-redux";
 
 const API_ENDPOINT = 'http://api.openweathermap.org/data/2.5/forecast';
 
-export default class StartDefault extends React.Component {
-    constructor(props) {
-        super(props);
-        // 初期stateを設定
-        this.state = {
-            apiKey : '47b3630b308ec48d5500f001df566669',
-            requestCity: '東京',
-            city: 'tokyo',
-            response : []
-        };
-        // 変数化
-        this.handleInput = this.handleInput.bind(this);
-        this.handleGetWeather = this.handleGetWeather.bind(this);
-    }
+export const StartDefault = () => {
+
+    const dispatch = useDispatch()
+    const selector = useSelector((state) => state)
+
     // 天気情報の取得
-    handleGetWeather(){
+    const handleGetWeather =() => {
         axios
             .get(API_ENDPOINT, {
                 params: {
-                    q: this.state.requestCity,
-                    APPID: this.state.apiKey
+                    q: selector.users.requestCity,
+                    APPID: selector.users.apiKey
                 } })
             .then(res => {
                 // stateへresponseとcityを更新
-                this.setState({
+                console.log(res);
+                dispatch(searchInputAction({
                     response: res.data.list,
                     city: res.data.city.name
-                });
+                }));
+                console.log(selector.users);
             })
             // エラーの場合描画
             .catch(function (error) {
                 console.log(error);
             });
     }
-    // ライフサイクルメソッドで全体描画時、関数呼び出し
-    componentDidMount() {
-        this.handleGetWeather()
+
+    handleGetWeather()
+
+    const handleChange = event => {
+        dispatch(searchInputAction({
+            requestCity: event.target.value
+        }));
+        console.log(selector.users);
+        handleGetWeather()
     }
 
-    // render内だと無限ループになるため、関数は外で定義
-    handleInput({ target: { value } }) {
-        this.setState({
-            requestCity: value
-        });
+    const handleSubmit = event => {
+        event.preventDefault();
     }
-    render() {
-        // stateが渡ってきているか確認
-        console.log(this.state.response);
-        return (
-            <div style={{margin: '100px'}}>
-                <h1>お天気検索</h1>
+
+    // const handleInput = (event) => {
+    //     event.preventDefault();
+    // }
+
+    return (
+        <div style={{margin: '100px'}}>
+            <h1>お天気検索</h1>
+            <form  onSubmit={handleSubmit}>
                 <TextField
                     id="standard-basic"
                     label="Standard"
                     type="text"
-                    // 入力した情報をstateへ渡す
-                    value={this.state.requestCity}
-                    // 関数呼び出し
-                    onChange={this.handleInput}
+                    value={(selector.users.responseCity)}
+                    onChange={handleChange}
                 />
                 {/* クリックしたら天気情報の取得 */}
                 <Button
-                    onClick={this.handleGetWeather}
+                    // onClick={handleChange}
+                    type="submit"
                     variant="contained"
                     color="primary"
                     >Search
                 </Button>
-                {/* クリックしたら場所情報の取得 */}
-                <p> Location: {this.state.city} </p>
-                {/* map関数 */}
-                {Object.keys(this.state.response).map(key => (
-                    <li key={key}>
-                        {this.state.response[key].dt_txt}
-                        {/* this.state.response[key].weather[0]で天気情報を取得 */}
-                        ,<img src={'http://openweathermap.org/img/w/'+this.state.response[key].weather[0].icon+'.png'} />
-                        {this.state.response[key].weather[0].main}
-                    </li>
-                ))}
-            </div>
-        );
-    }
+            </form>
+            {/* クリックしたら場所情報の取得 */}
+            {/* <p> Location: {selector.users.requestCity} </p> */}
+            {/* map関数 */}
+            {Object.keys(selector.users.response).map(key => (
+                <li key={key}>
+                    {selector.users.response[key].dt_txt}
+                    {/* selector.users.response[key].weather[0]で天気情報を取得 */}
+                    ,<img src={'http://openweathermap.org/img/w/'+selector.users.response[key].weather[0].icon+'.png'} />
+                    {selector.users.response[key].weather[0].main}
+                </li>
+            ))}
+        </div>
+    );
 }
+export default StartDefault;
+
