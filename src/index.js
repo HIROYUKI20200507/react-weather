@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
-import { createStore } from "./reducks/store/store";
+import createStore from "./reducks/store/store";
 // import * as serviceWorler from "./serviceWorler";
 import App from './App';
 
