@@ -11,4 +11,4 @@ export const searchInputAction = (userState) => {
             response: userState.response
         }
     }
-}
+};

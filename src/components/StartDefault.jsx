@@ -11,27 +11,27 @@ export const StartDefault = () => {
     const dispatch = useDispatch()
     const selector = useSelector((state) => state)
 
+
     // 天気情報の取得
     const handleGetWeather =() => {
         axios
-            .get(API_ENDPOINT, {
+        .get(API_ENDPOINT, {
                 params: {
                     q: selector.users.requestCity,
                     APPID: selector.users.apiKey
                 } })
-            .then(res => {
-                // stateへresponseとcityを更新
-                console.log(res);
-                dispatch(searchInputAction({
-                    response: res.data.list,
-                    city: res.data.city.name
-                }));
-                console.log(selector.users);
-            })
-            // エラーの場合描画
-            .catch(function (error) {
-                console.log(error);
-            });
+        .then(res => {
+            // stateへresponseとcityを更新
+            dispatch(searchInputAction({
+                response: res.data.list,
+                city: res.data.city.name
+            }));
+            console.log(selector.users);
+        })
+        // エラーの場合描画
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
     handleGetWeather()
@@ -41,16 +41,11 @@ export const StartDefault = () => {
             requestCity: event.target.value
         }));
         console.log(selector.users);
-        handleGetWeather()
     }
 
     const handleSubmit = event => {
         event.preventDefault();
     }
-
-    // const handleInput = (event) => {
-    //     event.preventDefault();
-    // }
 
     return (
         <div style={{margin: '100px'}}>
@@ -65,7 +60,7 @@ export const StartDefault = () => {
                 />
                 {/* クリックしたら天気情報の取得 */}
                 <Button
-                    // onClick={handleChange}
+                    onClick={handleChange}
                     type="submit"
                     variant="contained"
                     color="primary"
@@ -73,7 +68,7 @@ export const StartDefault = () => {
                 </Button>
             </form>
             {/* クリックしたら場所情報の取得 */}
-            {/* <p> Location: {selector.users.requestCity} </p> */}
+            {/* <p> Location: {selector.users.city} </p> */}
             {/* map関数 */}
             {Object.keys(selector.users.response).map(key => (
                 <li key={key}>

@@ -12,5 +12,5 @@ export default function createStore() {
             // products: productsReducer,
             users: UsersReducer,
         })
-    )
+        )
 }
