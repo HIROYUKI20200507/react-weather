@@ -26,7 +26,6 @@ export const StartDefault = () => {
                 response: res.data.list,
                 city: res.data.city.name
             }));
-            console.log(selector.users);
         })
         // エラーの場合描画
         .catch(function (error) {
@@ -40,7 +39,6 @@ export const StartDefault = () => {
         dispatch(searchInputAction({
             requestCity: event.target.value
         }));
-        console.log(selector.users);
     }
 
     const handleSubmit = event => {
@@ -68,7 +66,7 @@ export const StartDefault = () => {
                 </Button>
             </form>
             {/* クリックしたら場所情報の取得 */}
-            {/* <p> Location: {selector.users.city} </p> */}
+            <p> Location: {selector.users.city} </p>
             {/* map関数 */}
             {Object.keys(selector.users.response).map(key => (
                 <li key={key}>
