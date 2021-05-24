@@ -4,7 +4,7 @@ const initialState = {
         requestCity: '東京',
         city: 'tokyo',
         response : []
-}
+    }
 };
 
 export default initialState
