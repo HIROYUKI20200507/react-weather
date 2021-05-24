@@ -7,13 +7,11 @@ import { useDispatch,useSelector } from "react-redux";
 const API_ENDPOINT = 'http://api.openweathermap.org/data/2.5/forecast';
 
 export const StartDefault = () => {
-
     const dispatch = useDispatch()
     const selector = useSelector((state) => state)
 
-
     // 天気情報の取得
-    const handleGetWeather =() => {
+    const handleGetWeather = () => {
         axios
         .get(API_ENDPOINT, {
                 params: {
@@ -26,19 +24,13 @@ export const StartDefault = () => {
                 response: res.data.list,
                 city: res.data.city.name
             }));
+            console.log(selector.users);
         })
         // エラーの場合描画
         .catch(function (error) {
+            console.log(selector.users);
             console.log(error);
         });
-    }
-
-    handleGetWeather()
-
-    const handleChange = event => {
-        dispatch(searchInputAction({
-            requestCity: event.target.value
-        }));
     }
 
     const handleSubmit = event => {
@@ -53,12 +45,14 @@ export const StartDefault = () => {
                     id="standard-basic"
                     label="Standard"
                     type="text"
-                    value={(selector.users.responseCity)}
-                    onChange={handleChange}
+                    onChange = {(event) =>
+                        dispatch(searchInputAction({
+                            requestCity: event.target.value
+                    }))}
                 />
                 {/* クリックしたら天気情報の取得 */}
                 <Button
-                    onClick={handleChange}
+                    onClick={handleGetWeather()}
                     type="submit"
                     variant="contained"
                     color="primary"
