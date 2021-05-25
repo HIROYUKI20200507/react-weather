@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from "axios";
 import {Button, TextField} from "@material-ui/core";
 import { searchInputAction } from "../reducks/users/actions";
@@ -31,45 +31,41 @@ export const StartDefault = () => {
         });
     }
 
-    handleGetWeather()
-
-    const getWeather = () => {
+    useEffect(() => {
         handleGetWeather()
-    }
-
-    const handleSubmit = event => {
-        event.preventDefault();
-    }
+        console.log('発火しました')
+    });
 
     return (
         <div style={{margin: '100px'}}>
             <h1>お天気検索</h1>
-            <form onSubmit={handleSubmit}>
+            <div>
                 <TextField
                     id="standard-basic"
                     label="Standard"
                     type="text"
-                    onChange = {(event) =>
+                    onChange = {(event) => {
                         dispatch(searchInputAction({
                             requestCity: event.target.value
-                    }))}
+                        }))
+                    }}
                     />
                 <Button
-                    onClick={getWeather}
+                    onClick = {() => {handleGetWeather()}}
                     type="submit"
                     variant="contained"
                     color="primary"
                     >Search
                 </Button>
-            </form>
-            <p> Location: {selector.users.city} </p>
+            </div>
+            {/* <p> Location: {selector.users.city} </p>
             {Object.keys(selector.users.response).map(key => (
                 <li key={key}>
                     {selector.users.response[key].dt_txt}
                     ,<img src={'http://openweathermap.org/img/w/'+selector.users.response[key].weather[0].icon+'.png'} />
                     {selector.users.response[key].weather[0].main}
                 </li>
-            ))}
+            ))} */}
         </div>
     );
 }
