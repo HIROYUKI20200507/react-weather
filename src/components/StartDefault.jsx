@@ -10,7 +10,6 @@ export const StartDefault = () => {
     const dispatch = useDispatch()
     const selector = useSelector((state) => state)
 
-    // 天気情報の取得
     const handleGetWeather = () => {
         axios
         .get(API_ENDPOINT, {
@@ -19,7 +18,6 @@ export const StartDefault = () => {
                     APPID: selector.users.apiKey
                 } })
         .then(res => {
-            // stateへresponseとcityを更新
             dispatch(searchInputAction({
                 response: res.data.list,
                 city: res.data.city.name
@@ -32,15 +30,16 @@ export const StartDefault = () => {
             console.log(error);
         });
     }
+    handleGetWeather()
 
     const handleSubmit = event => {
         event.preventDefault();
     }
 
     return (
-        <div style={{margin: '100px'}}>
+        <div>
             <h1>お天気検索</h1>
-            <form  onSubmit={handleSubmit}>
+            <div>
                 <TextField
                     id="standard-basic"
                     label="Standard"
@@ -50,22 +49,18 @@ export const StartDefault = () => {
                             requestCity: event.target.value
                     }))}
                 />
-                {/* クリックしたら天気情報の取得 */}
                 <Button
-                    onClick={handleGetWeather()}
+                    onClick={handleGetWeather}
                     type="submit"
                     variant="contained"
                     color="primary"
                     >Search
                 </Button>
-            </form>
-            {/* クリックしたら場所情報の取得 */}
+            </div>
             <p> Location: {selector.users.city} </p>
-            {/* map関数 */}
             {Object.keys(selector.users.response).map(key => (
                 <li key={key}>
                     {selector.users.response[key].dt_txt}
-                    {/* selector.users.response[key].weather[0]で天気情報を取得 */}
                     ,<img src={'http://openweathermap.org/img/w/'+selector.users.response[key].weather[0].icon+'.png'} />
                     {selector.users.response[key].weather[0].main}
                 </li>
