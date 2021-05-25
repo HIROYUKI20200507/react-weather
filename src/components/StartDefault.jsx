@@ -30,16 +30,21 @@ export const StartDefault = () => {
             console.log(error);
         });
     }
+
     handleGetWeather()
+
+    const getWeather = () => {
+        handleGetWeather()
+    }
 
     const handleSubmit = event => {
         event.preventDefault();
     }
 
     return (
-        <div>
+        <div style={{margin: '100px'}}>
             <h1>お天気検索</h1>
-            <div>
+            <form onSubmit={handleSubmit}>
                 <TextField
                     id="standard-basic"
                     label="Standard"
@@ -48,15 +53,15 @@ export const StartDefault = () => {
                         dispatch(searchInputAction({
                             requestCity: event.target.value
                     }))}
-                />
+                    />
                 <Button
-                    onClick={handleGetWeather}
+                    onClick={getWeather}
                     type="submit"
                     variant="contained"
                     color="primary"
                     >Search
                 </Button>
-            </div>
+            </form>
             <p> Location: {selector.users.city} </p>
             {Object.keys(selector.users.response).map(key => (
                 <li key={key}>
