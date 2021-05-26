@@ -1,0 +1,16 @@
+.weather-list {
+    margin: 100px;
+
+    .MuiButton-containedPrimary {
+        margin-top: 10px;
+    }
+
+    & > li {
+        list-style: none;
+        padding: 10px;
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+}
