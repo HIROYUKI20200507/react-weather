@@ -10,31 +10,37 @@ export const StartDefault = () => {
     const dispatch = useDispatch()
     const selector = useSelector((state) => state)
 
-    const handleGetWeather = () => {
-        axios
-        .get(API_ENDPOINT, {
+    useEffect(() => {
+            axios
+            .get(API_ENDPOINT, {
                 params: {
                     q: selector.users.requestCity,
                     APPID: selector.users.apiKey
-                } })
-        .then(res => {
-            dispatch(searchInputAction({
-                response: res.data.list,
-                city: res.data.city.name
-            }));
-            console.log(selector.users);
-        })
-        // エラーの場合描画
-        .catch(function (error) {
-            console.log(selector.users);
-            console.log(error);
-        });
+                }
+            })
+                .then(res => {
+                    dispatch(searchInputAction({
+                        response: res.data.list,
+                        city: res.data.city.name
+                    }));
+                    console.log(selector.users);
+                })
+                // エラーの場合描画
+                .catch(function (error) {
+                    console.log(selector.users);
+                    console.log(error);
+                });
+    });
+
+    const changeInput = (event) => {
+        dispatch(searchInputAction({
+            requestCity: event.target.value
+        }))
     }
 
-    useEffect(() => {
-        handleGetWeather()
-        console.log('発火しました')
-    });
+    const resultSubmit = (event) => {
+        console.log(event.target.value)
+    }
 
     return (
         <div style={{margin: '100px'}}>
@@ -44,30 +50,26 @@ export const StartDefault = () => {
                     id="standard-basic"
                     label="Standard"
                     type="text"
-                    onChange = {(event) => {
-                        dispatch(searchInputAction({
-                            requestCity: event.target.value
-                        }))
-                    }}
+                    onChange = {changeInput}
                     />
                 <Button
-                    onClick = {() => {handleGetWeather()}}
+                    onClick = {resultSubmit}
                     type="submit"
                     variant="contained"
                     color="primary"
                     >Search
                 </Button>
             </div>
-            {/* <p> Location: {selector.users.city} </p>
+            <p> Location: {selector.users.city} </p>
             {Object.keys(selector.users.response).map(key => (
                 <li key={key}>
-                    {selector.users.response[key].dt_txt}
+                {selector.users.response[key].dt_txt}
                     ,<img src={'http://openweathermap.org/img/w/'+selector.users.response[key].weather[0].icon+'.png'} />
                     {selector.users.response[key].weather[0].main}
                 </li>
-            ))} */}
+            ))}
         </div>
     );
 }
-export default StartDefault;
+    export default StartDefault;
 
