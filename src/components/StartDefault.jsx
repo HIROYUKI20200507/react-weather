@@ -69,4 +69,3 @@ export const StartDefault = () => {
     );
 }
     export default StartDefault;
-
