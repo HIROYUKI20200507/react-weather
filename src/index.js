@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import createStore from "./reducks/store/store";
 // import * as serviceWorler from "./serviceWorler";
 import App from './App';
+import  "../src/assets/style.css";
 
 export const store = createStore();
 

@@ -30,38 +30,35 @@ export const StartDefault = () => {
                     console.log(selector.users);
                     console.log(error);
                 });
-    });
-
-    const changeInput = (event) => {
-        dispatch(searchInputAction({
-            requestCity: event.target.value
-        }))
-    }
+    },[selector.users.requestCity]);
 
     const resultSubmit = (event) => {
-        console.log(event.target.value)
+        dispatch(searchInputAction({
+            requestCity: event.target.input.value
+        }));
+        event.preventDefault()
     }
 
     return (
-        <div style={{margin: '100px'}}>
+        <div className="weather-list">
             <h1>お天気検索</h1>
-            <div>
+            <form onSubmit = {resultSubmit}>
                 <TextField
                     id="standard-basic"
                     label="Standard"
                     type="text"
-                    onChange = {changeInput}
+                    name="input"
                     />
                 <Button
-                    onClick = {resultSubmit}
+                    className="weather-list-button"
                     type="submit"
                     variant="contained"
                     color="primary"
                     >Search
                 </Button>
-            </div>
+            </form>
             <p> Location: {selector.users.city} </p>
-            {Object.keys(selector.users.response).map(key => (
+            {selector.users.response && Object.keys(selector.users.response).map(key => (
                 <li key={key}>
                 {selector.users.response[key].dt_txt}
                     ,<img src={'http://openweathermap.org/img/w/'+selector.users.response[key].weather[0].icon+'.png'} />
