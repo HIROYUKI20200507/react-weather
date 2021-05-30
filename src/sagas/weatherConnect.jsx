@@ -1,9 +1,9 @@
 import { fork } from 'redux-saga/effects'
 
 function* connectResult() {
-    console.log('呼び出された')
+    console.log('呼び出せてる？')
 }
 
-export function* callSaga() {
-    yield fork(connectResult)
+export default function* callSaga() {
+    yield fork(connectResult);
 }
