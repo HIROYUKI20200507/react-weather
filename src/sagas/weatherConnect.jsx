@@ -33,6 +33,6 @@ function* fetchCountry() {
     } else {
         yield put(console.log(error))
     }
-    }
+}
 
     export const callSaga = [takeEvery(searchInputAction, fetchCountry)]

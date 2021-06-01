@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {Button, TextField} from "@material-ui/core";
 import { searchInputAction } from "../reducks/users/actions";
 import { useDispatch,useSelector } from "react-redux";
@@ -7,13 +7,6 @@ import { useDispatch,useSelector } from "react-redux";
 export const StartDefault = () => {
     const dispatch = useDispatch()
     const selector = useSelector((state) => state)
-    console.log(selector)
-
-    useEffect(async () => {
-        await dispatch(searchInputAction())
-        console.log('useEffect起動')
-    },[selector.requestCity]);
-
     const resultSubmit = (event) => {
         dispatch(searchInputAction({
             requestCity: event.target.input.value
