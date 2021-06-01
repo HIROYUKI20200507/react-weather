@@ -1,36 +1,18 @@
 import React, { useEffect } from 'react';
-import axios from "axios";
 import {Button, TextField} from "@material-ui/core";
 import { searchInputAction } from "../reducks/users/actions";
 import { useDispatch,useSelector } from "react-redux";
 
-const API_ENDPOINT = 'http://api.openweathermap.org/data/2.5/forecast';
 
 export const StartDefault = () => {
     const dispatch = useDispatch()
     const selector = useSelector((state) => state)
+    console.log(selector)
 
-    useEffect(() => {
-            axios
-            .get(API_ENDPOINT, {
-                params: {
-                    q: selector.users.requestCity,
-                    APPID: selector.users.apiKey
-                }
-            })
-                .then(res => {
-                    dispatch(searchInputAction({
-                        response: res.data.list,
-                        city: res.data.city.name
-                    }));
-                    console.log(selector.users);
-                })
-                // エラーの場合描画
-                .catch(function (error) {
-                    console.log(selector.users);
-                    console.log(error);
-                });
-    },[selector.users.requestCity]);
+    useEffect(async () => {
+        await dispatch(searchInputAction())
+        console.log('useEffect起動')
+    },[selector.requestCity]);
 
     const resultSubmit = (event) => {
         dispatch(searchInputAction({
@@ -57,12 +39,12 @@ export const StartDefault = () => {
                     >Search
                 </Button>
             </form>
-            <p> Location: {selector.users.city} </p>
-            {selector.users.response && Object.keys(selector.users.response).map(key => (
+            <p> Location: {selector.city} </p>
+            {selector.response && Object.keys(selector.response).map(key => (
                 <li key={key}>
-                {selector.users.response[key].dt_txt}
-                    ,<img src={'http://openweathermap.org/img/w/'+selector.users.response[key].weather[0].icon+'.png'} />
-                    {selector.users.response[key].weather[0].main}
+                {selector.response[key].dt_txt}
+                    ,<img src={'http://openweathermap.org/img/w/'+selector.response[key].weather[0].icon+'.png'} />
+                    {selector.response[key].weather[0].main}
                 </li>
             ))}
         </div>

@@ -2,10 +2,9 @@ import {
     createStore as reduxCreateStore,
     applyMiddleware
 } from 'redux';
-// import { productsReducer } from "../products/reducers";
 import { UsersReducer } from "../users/reducers";
 import createSagaMiddleware from "redux-saga";
-import { rootSaga } from "../../sagas/index";
+import rootSaga from "../../sagas/index";
 
 export default function createStore() {
     const sagaMiddleware = createSagaMiddleware();

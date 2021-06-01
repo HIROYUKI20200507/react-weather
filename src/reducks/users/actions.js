@@ -1,8 +1,12 @@
 // actionsはプレーンなオブジェクトで返す
+
+import { useState } from "react";
+
 // １定数を指定
 export const SEARCH_INPUT = 'SEARCH_INPUT';
 // ２純粋なデータだけ返す
 export const searchInputAction = (userState) => {
+    console.log(userState)
     return {
         type: 'SEARCH_INPUT',
         payload: {
@@ -12,3 +16,10 @@ export const searchInputAction = (userState) => {
         }
     }
 };
+
+export const successCountryApi = (res) => {
+    return {
+        response: res.data.list,
+        city: res.data.city.name
+    }
+}
