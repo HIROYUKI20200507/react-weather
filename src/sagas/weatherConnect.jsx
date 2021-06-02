@@ -11,8 +11,8 @@ const WeatherConnect = () => {
     return axios
     .get(API_ENDPOINT, {
         params: {
-            q: selector.users.requestCity,
-            APPID: selector.users.apiKey
+            q: selector.requestCity,
+            APPID: selector.apiKey
         }
     })
     .then(res => {
