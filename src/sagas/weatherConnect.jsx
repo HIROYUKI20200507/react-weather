@@ -23,7 +23,8 @@ const WeatherConnect = (state) => {
 
 function* fetchCountry() {
     const state = yield select();
-    const { country, error } = yield call(WeatherConnect(state))
+    console.log(state)
+    const { country, error } = yield call(WeatherConnect, state)
 
     if (country) {
         yield put(successCountryApi(country))
