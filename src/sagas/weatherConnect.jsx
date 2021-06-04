@@ -1,18 +1,14 @@
 import { searchInputAction, successCountryApi } from "../reducks/users/actions";
-import { put, call, takeEvery } from 'redux-saga/effects'
-import { useSelector } from "react-redux";
+import { put, call, takeEvery, select } from 'redux-saga/effects'
 import axios from "axios";
 
-const WeatherConnect = () => {
-    const selector = useSelector((state) => state)
-    console.log('呼び出せてる？')
-
+const WeatherConnect = (state) => {
     const API_ENDPOINT = 'http://api.openweathermap.org/data/2.5/forecast';
     return axios
     .get(API_ENDPOINT, {
         params: {
-            q: selector.requestCity,
-            APPID: selector.apiKey
+            q: state.requestCity,
+            APPID: state.apiKey
         }
     })
     .then(res => {
@@ -26,7 +22,9 @@ const WeatherConnect = () => {
 }
 
 function* fetchCountry() {
-    const { country, error } = yield call(WeatherConnect)
+    const state = yield select();
+    console.log(state)
+    const { country, error } = yield call(WeatherConnect, state)
 
     if (country) {
         yield put(successCountryApi(country))
