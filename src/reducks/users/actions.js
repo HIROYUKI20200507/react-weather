@@ -22,4 +22,4 @@ export const successCountryApi = (res) => {
             city: res.data.city.name
         }
     }
-}
+};
