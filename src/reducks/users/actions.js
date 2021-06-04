@@ -25,8 +25,12 @@ export const successCountryApi = (res) => {
 };
 
 export const successCountryApi = (res) => {
+    console.log(res,'res')
     return {
-        response: res.data.list,
-        city: res.data.city.name
+        type: SUCCESS_COUNTRY_API,
+        payload: {
+            response: res.data.list,
+            city: res.data.city.name
+        }
     }
 }
