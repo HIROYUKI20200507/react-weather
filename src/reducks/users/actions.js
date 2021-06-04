@@ -23,3 +23,10 @@ export const successCountryApi = (res) => {
         }
     }
 };
+
+export const successCountryApi = (res) => {
+    return {
+        response: res.data.list,
+        city: res.data.city.name
+    }
+}
